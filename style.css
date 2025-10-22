@@ -1,0 +1,13 @@
+*, *::after, *::before {
+  padding: 0px;
+  margin: 0px;
+  line-height: 1.5;
+}
+
+:root {
+  font-family: "Roboto", system-ui, sans-serif;
+}
+
+:root * {
+  font-family: inherit;
+}
