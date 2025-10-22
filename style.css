@@ -36,3 +36,10 @@
   .read::before { content: "Read: " };
   .id::before { content: "Id: " };
 }
+
+.add-book-dialog {
+  margin: auto;
+  padding: 8px;
+  form {
+  }
+}

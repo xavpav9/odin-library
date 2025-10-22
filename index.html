@@ -12,6 +12,39 @@
   </head>
   <body>
     <h1>Library</h1>
+    <button class="add-book">Add book</button>
+    <dialog class="add-book-dialog">
+      <form method="dialog">
+        <h1>Add a new book:</h1>
+        <div>
+          <label for="title">Title: </label>
+          <input name="title" id="title" type="text">
+        </div>
+        <div>
+          <label for="author">Author: </label>
+          <input name="author" id="author" type="text">
+        </div>
+        <div>
+          <label for="pages">Pages: </label>
+          <input name="pages" id="pages" type="number" min="1">
+        </div>
+        <div>
+          <label for="year">Year: </label>
+          <input name="year" id="year" type="number" min="0">
+          <input type="radio" id="AD" name="timeframe" value="AD" checked>
+          <label for="AD">AD</label>
+          <input type="radio" id="BC" name="timeframe" value="BC" checked>
+          <label for="BC">BC</label>
+        </div>
+        <div>
+          <label for="read">Read: </label>
+          <input name="read" id="read" type="checkbox">
+        </div>
+        <div>
+          <button class="cancel-btn">Cancel</button>
+          <button class="submit-btn">Submit</button>
+      </form>
+    </dialog>
     <div class="books">
     </div>
   </body>
