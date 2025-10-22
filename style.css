@@ -11,3 +11,28 @@
 :root * {
   font-family: inherit;
 }
+
+.books {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+
+  width: 80vw;
+  margin: 0 auto;
+}
+
+.book {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 8px;
+  height: 200px;
+
+  .title::before { content: "Title: " };
+  .author::before { content: "Author: " };
+  .pages::before { content: "Pages: " };
+  .year::before { content: "Year: " };
+  .read::before { content: "Read: " };
+  .id::before { content: "Id: " };
+}
