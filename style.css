@@ -14,8 +14,8 @@
 
 .books {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+  gap: 30px 40px;
   justify-content: center;
   align-items: center;
 
@@ -24,17 +24,54 @@
 }
 
 .book {
-  border: 2px solid black;
-  border-radius: 5px;
-  padding: 8px;
-  height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
-  .title::before { content: "Title: " };
-  .author::before { content: "Author: " };
-  .pages::before { content: "Pages: " };
-  .year::before { content: "Year: " };
-  .read::before { content: "Read: " };
-  .id::before { content: "Id: " };
+  border: 4px solid black;
+  border-radius: 5px;
+  padding: 16px;
+  aspect-ratio: calc(2 / 3);
+  box-shadow: 3px 3px 10px black;
+
+  .book-header {
+    padding: 20px 8px 32px;
+    background-color: #FFFA;
+    border-radius: 20px;
+  }
+
+  .book-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+
+    color: white;
+    padding: 24px 20px 32px;
+    background-color: #88F8;
+    border-radius: 15px;
+
+    & > * {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2px;
+  };
+  .author {
+    text-align: center;
+    font-size: 1rem;
+  };
+  .id {
+    align-self: center;
+    font-size: 0.8rem;
+  };
 }
 
 .add-book-dialog {
