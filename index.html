@@ -14,33 +14,36 @@
     <h1>Library</h1>
     <button class="add-book">Add book</button>
     <dialog class="add-book-dialog">
+      <h1>Add a new book:</h1>
+      <p aria-hidden="true"><span class="required">*</span> indicates required.</p>
+
       <form method="dialog">
-        <h1>Add a new book:</h1>
-        <div>
-          <label for="title">Title: </label>
-          <input name="title" id="title" type="text">
+        <label for="title">Title: <span class="required" aria-hidden="true">*</span></label>
+        <input aria-required="true" name="title" id="title" type="text" minlength="1" required placeholder="e.g. The Hunger Games">
+
+        <label for="author">Author: <span class="required" aria-hidden="true">*</span></label>
+        <input aria-required="true" name="author" id="author" type="text" minlength="1" required placeholder="e.g. Suzanne Collins">
+
+        <label for="pages">Pages: </label>
+        <input name="pages" id="pages" type="number" min="1" placeholder="e.g. 374">
+
+        <label for="year">Year: </label>
+        <div class="year-options">
+          <input name="year" id="year" type="number" min="0" placeholder="e.g. 2008">
+          <div class="timeframe">
+            <input type="radio" id="AD" name="timeframe" value="AD" checked>
+            <label for="AD">AD</label>
+          </div>
+          <div class="timeframe">
+            <input type="radio" id="BC" name="timeframe" value="BC">
+            <label for="BC">BC</label>
+          </div>
         </div>
-        <div>
-          <label for="author">Author: </label>
-          <input name="author" id="author" type="text">
-        </div>
-        <div>
-          <label for="pages">Pages: </label>
-          <input name="pages" id="pages" type="number" min="1">
-        </div>
-        <div>
-          <label for="year">Year: </label>
-          <input name="year" id="year" type="number" min="0">
-          <input type="radio" id="AD" name="timeframe" value="AD" checked>
-          <label for="AD">AD</label>
-          <input type="radio" id="BC" name="timeframe" value="BC" checked>
-          <label for="BC">BC</label>
-        </div>
-        <div>
-          <label for="read">Read: </label>
-          <input name="read" id="read" type="checkbox">
-        </div>
-        <div>
+
+        <label for="read">Read: </label>
+        <input name="read" id="read" type="checkbox">
+
+        <div class="buttons">
           <button class="cancel-btn">Cancel</button>
           <button class="submit-btn">Submit</button>
       </form>

@@ -1,5 +1,17 @@
 const myLibrary = [];
 const booksDisplay = document.querySelector(".books");
+const addBookBtn = document.querySelector(".add-book");
+const addBookDialog = document.querySelector(".add-book-dialog");
+const submitBtn = document.querySelector(".submit-btn");
+const cancelBtn = document.querySelector(".cancel-btn");
+
+const titleInput = document.querySelector("#title");
+const authorInput = document.querySelector("#author");
+const pagesInput = document.querySelector("#pages");
+const yearInput = document.querySelector("#year");
+const readInput = document.querySelector("#read");
+
+document.querySelector("#year").setAttribute("max", new Date().getFullYear());
 
 function Book(title, author, pages, year, read) {
   if (!new.target) {
@@ -36,6 +48,25 @@ function refreshBooks() {
   [...booksDisplay.children].forEach(child => child.remove());
   myLibrary.forEach(book => addBookToPage(book))
 };
+
+addBookBtn.addEventListener("click", evt => {
+  titleInput.value = "";
+  authorInput.value = "";
+  pagesInput.value = "";
+  yearInput.value = "";
+  readInput.checked = false;
+  document.querySelector("#AD").checked = true;
+  addBookDialog.showModal();
+});
+
+submitBtn.addEventListener("click", evt => {
+  evt.preventDefault();
+});
+
+cancelBtn.addEventListener("click", evt => {
+  evt.preventDefault();
+  addBookDialog.close();
+});
 
 addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true);
 addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true);
