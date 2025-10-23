@@ -64,31 +64,50 @@ function addBookToPage(book) {
     const pagesDisplay = document.createElement("p");
     pagesDisplay.textContent = `${book.pages} pages`;
     pagesDisplay.classList.add("pages");
-    bottomContentDiv.appendChild(pagesDisplay);
+    topContentDiv.appendChild(pagesDisplay);
   }
 
   if (book.year != "unprovided") {
     const yearDisplay = document.createElement("p");
     yearDisplay.textContent = `Released in ${book.year}`;
     yearDisplay.classList.add("year");
-    bottomContentDiv.appendChild(yearDisplay);
+    topContentDiv.appendChild(yearDisplay);
   }
 
   const readDisplay = document.createElement("p");
   readDisplay.textContent = `Status: ${(book.read) ? "Read" : "Not read yet"}`;
   readDisplay.classList.add("read");
-  topContentDiv.appendChild(readDisplay);
+  bottomContentDiv.appendChild(readDisplay);
+
+  const btns = document.createElement("div");
+  const btn1 = document.createElement("img");
+  const btn2 = document.createElement("img");
+  const btn3 = document.createElement("img");
+
+  if (book.read) {
+    btn1.src = "images/icons/read.svg";
+  } else {
+    btn1.src = "images/icons/not-read.svg";
+  }
+  btn2.src = "images/icons/edit.svg";
+  btn3.src = "images/icons/remove.svg";
+
+  btns.appendChild(btn1);
+  btns.appendChild(btn2);
+  btns.appendChild(btn3);
+  bottomContentDiv.appendChild(btns);
 
   const idDisplay = document.createElement("p");
   idDisplay.textContent = `Id: ${book.id}`;
   idDisplay.classList.add("id");
-  topContentDiv.appendChild(idDisplay);
+  bottomContentDiv.appendChild(idDisplay);
 
-  [bottomContentDiv, topContentDiv].forEach(div => contentDiv.appendChild(div));
+  [topContentDiv, bottomContentDiv].forEach(div => contentDiv.appendChild(div));
   [headerDiv, contentDiv].forEach(div => bookDisplay.appendChild(div));
 
-  bookDisplay.style.backgroundImage = `url("images/book-cover${Math.floor(Math.random() * 3)}.jpg")`;
+  bookDisplay.style.backgroundImage = `url("images/book-covers/book-cover${Math.floor(Math.random() * 3)}.jpg")`;
   bookDisplay.style.backgroundSize = "cover";
+  bookDisplay.dataset.id = book.id;
 
   booksDisplay.appendChild(bookDisplay);
 };
