@@ -61,6 +61,20 @@ addBookBtn.addEventListener("click", evt => {
 
 submitBtn.addEventListener("click", evt => {
   evt.preventDefault();
+
+  if (document.querySelectorAll(":invalid").length == 0) {
+    addBookToLibrary(titleInput.value, authorInput.value, pagesInput.value, yearInput.value, readInput.value);
+    addBookDialog.close();
+  } else {
+    submitBtn.style.color = "#F44";
+    setTimeout(() => submitBtn.style.color = "white", 200);
+  };
+});
+
+addBookDialog.addEventListener("keydown", evt => {
+  if (evt.key == "Enter") {
+    evt.preventDefault();
+  }
 });
 
 cancelBtn.addEventListener("click", evt => {
