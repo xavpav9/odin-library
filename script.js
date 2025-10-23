@@ -32,14 +32,17 @@ function Book(title, author, pages, year, read) {
   };
   this.read = read;
   this.id = crypto.randomUUID();
+  this.texture = Math.floor(Math.random() * 3);
 };
 
 function addBookToLibrary(title, author, pages, year, read) {
-  myLibrary.push(new Book(title, author, pages, year, read));
-  addBookToPage(myLibrary[myLibrary.length - 1]);
+  const book = new Book(title, author, pages, year, read);
+  myLibrary.push([book, createBookForDOM(book)]);
+  booksDisplay.appendChild(myLibrary[myLibrary.length - 1][1]);
+
 };
 
-function addBookToPage(book) {
+function createBookForDOM(book) {
   const headerDiv = document.createElement("div");
   headerDiv.classList.add("book-header");
   const contentDiv = document.createElement("div");
@@ -80,21 +83,58 @@ function addBookToPage(book) {
   bottomContentDiv.appendChild(readDisplay);
 
   const btns = document.createElement("div");
-  const btn1 = document.createElement("img");
-  const btn2 = document.createElement("img");
-  const btn3 = document.createElement("img");
+  const readBtn = document.createElement("img");
+  const editBtn = document.createElement("img");
+  const removeBtn = document.createElement("img");
 
   if (book.read) {
-    btn1.src = "images/icons/read.svg";
+    readBtn.src = "images/icons/read.svg";
+    readBtn.title = "Read";
   } else {
-    btn1.src = "images/icons/not-read.svg";
+    readBtn.src = "images/icons/not-read.svg";
+    readBtn.title = "Not Read";
   }
-  btn2.src = "images/icons/edit.svg";
-  btn3.src = "images/icons/remove.svg";
+  editBtn.src = "images/icons/edit.svg";
+  editBtn.title = "Edit";
+  removeBtn.src = "images/icons/remove.svg";
+  removeBtn.title = "Remove";
 
-  btns.appendChild(btn1);
-  btns.appendChild(btn2);
-  btns.appendChild(btn3);
+  readBtn.addEventListener("click", evt => {
+    let element = evt.target;
+    while (element.dataset.id === undefined) {
+      element = element.parentNode;
+    };
+    const id = element.dataset.id;
+
+    for (let book of myLibrary) {
+      if (book[0].id === id) {
+        book[0].read = !book[0].read;
+        book[1] = createBookForDOM(book[0]);
+        refreshBooks();
+        break;
+      };
+    };
+  });
+
+  removeBtn.addEventListener("click", evt => {
+    let element = evt.target;
+    while (element.dataset.id === undefined) {
+      element = element.parentNode;
+    };
+    const id = element.dataset.id;
+
+    for (let i = 0; i < myLibrary.length; ++i) {
+      if (myLibrary[i][0].id === id) {
+        myLibrary[i][1].remove();
+        myLibrary.splice(i, 1);
+        break;
+      };
+    };
+  });
+
+  btns.appendChild(readBtn);
+  btns.appendChild(editBtn);
+  btns.appendChild(removeBtn);
   bottomContentDiv.appendChild(btns);
 
   const idDisplay = document.createElement("p");
@@ -105,16 +145,16 @@ function addBookToPage(book) {
   [topContentDiv, bottomContentDiv].forEach(div => contentDiv.appendChild(div));
   [headerDiv, contentDiv].forEach(div => bookDisplay.appendChild(div));
 
-  bookDisplay.style.backgroundImage = `url("images/book-covers/book-cover${Math.floor(Math.random() * 3)}.jpg")`;
+  bookDisplay.style.backgroundImage = `url("images/book-covers/book-cover${book.texture}.jpg")`;
   bookDisplay.style.backgroundSize = "cover";
   bookDisplay.dataset.id = book.id;
 
-  booksDisplay.appendChild(bookDisplay);
+  return bookDisplay;
 };
 
 function refreshBooks() {
   [...booksDisplay.children].forEach(child => child.remove());
-  myLibrary.forEach(book => addBookToPage(book))
+  myLibrary.forEach(book => booksDisplay.appendChild(book[1]));
 };
 
 addBookBtn.addEventListener("click", evt => {
