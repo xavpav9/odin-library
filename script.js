@@ -9,14 +9,15 @@ const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
 const pagesInput = document.querySelector("#pages");
 const yearInput = document.querySelector("#year");
+const timeframeInputs = document.querySelectorAll(".timeframe input");
 const readInput = document.querySelector("#read");
-const inputs = [titleInput, authorInput, pagesInput, yearInput, readInput]
+const inputs = [titleInput, authorInput, pagesInput, yearInput, timeframeInputs, readInput]
 let editMode = false;
 let objIndexToBeEdited;
 
 document.querySelector("#year").setAttribute("max", new Date().getFullYear());
 
-function Book(title, author, pages, year, read) {
+function Book(title, author, pages, year, timeframe, read) {
   if (!new.target) {
     throw Error("Use new keyword with this constructor.");
   };
@@ -29,31 +30,43 @@ function Book(title, author, pages, year, read) {
   };
   if (year == "") {
     this.year = "unprovided";
+    this.timeframe = "unprovided";
   } else {
     this.year = year;
+    this.timeframe = timeframe ? "AD" : "BC";
   };
   this.read = read;
   this.id = crypto.randomUUID();
   this.texture = Math.floor(Math.random() * 3);
 };
 
-function editBook(book, title, author, pages, year, read) {
-  book.title = title;
-  book.author = author;
-  book.pages = pages;
-  book.year = year;
-  book.read = read;
+function editBook(title, author, pages, year, timeframe, read) {
+  this.title = title;
+  this.author = author;
+  if (pages == "") {
+    this.pages = "unprovided";
+  } else {
+    this.pages = pages;
+  };
+  if (year == "") {
+    this.year = "unprovided";
+    this.timeframe = "unprovided";
+  } else {
+    this.year = year;
+    this.timeframe = timeframe ? "AD" : "BC";
+  };
+  this.read = read;
 };
 
-function addBookToLibrary(title, author, pages, year, read, index=-1) {
+function addBookToLibrary(title, author, pages, year, timeframe, read, index=-1) {
   if (index === -1) {
-    const book = new Book(title, author, pages, year, read);
+    const book = new Book(title, author, pages, year, timeframe, read);
     const bookForDOM = createBookForDOM(book);
     myLibrary.push([book, bookForDOM]);
     booksDisplay.appendChild(bookForDOM);
   } else {
     const book = myLibrary[index][0];
-    editBook(book, ...inputs.slice(0, -1).map(input => input.value), readInput.checked);
+    editBook.call(book, ...inputs.slice(0, -1).map(input => input.value), readInput.checked);
     const bookForDOM = createBookForDOM(book);
     booksDisplay.removeChild([...booksDisplay.children][index]);
     nextBook = index === myLibrary.length - 1 ? null : myLibrary[index + 1][1];
@@ -93,7 +106,7 @@ function createBookForDOM(book) {
 
   if (book.year != "unprovided") {
     const yearDisplay = document.createElement("p");
-    yearDisplay.textContent = `Released in ${book.year}`;
+    yearDisplay.textContent = `Released in ${book.year} ${book.timeframe}`;
     yearDisplay.classList.add("year");
     topContentDiv.appendChild(yearDisplay);
   }
@@ -156,8 +169,8 @@ function createBookForDOM(book) {
     authorInput.value = obj.author;
     pagesInput.value = obj.pages;
     yearInput.value = obj.year;
+    timeframeInputs[obj.timeframe === "AD" ? 0 : 1].checked = true;
     readInput.checked = obj.read;
-    document.querySelector("#AD").checked = true;
     addBookDialog.querySelector("& > :first-child").textContent = "Edit Book: ";
     addBookDialog.showModal();
   });
@@ -208,6 +221,7 @@ addBookBtn.addEventListener("click", evt => {
   authorInput.value = "";
   pagesInput.value = "";
   yearInput.value = "";
+  timeframeInputs[0].checked = true;
   readInput.checked = false;
   document.querySelector("#AD").checked = true;
   addBookDialog.querySelector("& > :first-child").textContent = "Add a new book: ";
@@ -218,7 +232,7 @@ submitBtn.addEventListener("click", evt => {
   evt.preventDefault();
 
   if (document.querySelectorAll(":invalid").length == 0) {
-    addBookToLibrary(...inputs.slice(0, -1).map(input => input.value), readInput.checked, (editMode) ? objIndexToBeEdited : -1);
+    addBookToLibrary(...inputs.slice(0, -2).map(input => input.value), timeframeInputs[0].checked, readInput.checked, (editMode) ? objIndexToBeEdited : -1);
     editMode = false;
     addBookDialog.close();
   } else {
@@ -239,6 +253,6 @@ cancelBtn.addEventListener("click", evt => {
   editMode = false;
 });
 
-addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true);
-addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true);
-addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true);
+addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true, true);
+addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, false, true);
+addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true, true);
