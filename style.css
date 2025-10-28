@@ -20,7 +20,10 @@ body {
 
 div.header {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+
   background: linear-gradient(90deg, #f5deb3, 40%, #e5cea3);
   padding: 20px;
   border-bottom: 10px solid white;
@@ -29,12 +32,19 @@ div.header {
     text-align: center;
   }
 
+  .logo {
+    width: 2rem;
+    height: 2rem;
+    image-rendering: pixelated;
+  }
+
   button {
     cursor: pointer;
     padding: 8px 16px;
     border-radius: 5px;
     background-color: #0f0;
     transition: background-color 0.1s;
+    margin-left: auto;
 
     &:hover, &:focus {
       outline: none;
