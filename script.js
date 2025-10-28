@@ -2,8 +2,11 @@ const myLibrary = [];
 const booksDisplay = document.querySelector(".books");
 const addBookBtn = document.querySelector(".add-book");
 const addBookDialog = document.querySelector(".add-book-dialog");
+const removeBookDialog = document.querySelector(".remove-book-dialog");
 const submitBtn = document.querySelector(".submit-btn");
 const cancelBtn = document.querySelector(".cancel-btn");
+const yesBtn = document.querySelector(".yes-btn");
+const noBtn = document.querySelector(".no-btn");
 
 const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
@@ -14,6 +17,7 @@ const readInput = document.querySelector("#read");
 const inputs = [titleInput, authorInput, pagesInput, yearInput, timeframeInputs, readInput]
 let editMode = false;
 let objIndexToBeEdited;
+let bookIdToBeRemoved;
 
 document.querySelector("#year").setAttribute("max", new Date().getFullYear());
 
@@ -180,15 +184,8 @@ function createBookForDOM(book) {
     while (element.dataset.id === undefined) {
       element = element.parentNode;
     };
-    const id = element.dataset.id;
-
-    for (let i = 0; i < myLibrary.length; ++i) {
-      if (myLibrary[i][0].id === id) {
-        myLibrary[i][1].remove();
-        myLibrary.splice(i, 1);
-        break;
-      };
-    };
+    bookIdToBeRemoved = element.dataset.id;
+    removeBookDialog.showModal();
   });
 
   btns.appendChild(readBtn);
@@ -241,16 +238,31 @@ submitBtn.addEventListener("click", evt => {
   };
 });
 
+cancelBtn.addEventListener("click", evt => {
+  evt.preventDefault();
+  addBookDialog.close();
+  editMode = false;
+});
+
 addBookDialog.addEventListener("keydown", evt => {
   if (evt.key == "Enter") {
     evt.preventDefault();
   }
 });
 
-cancelBtn.addEventListener("click", evt => {
-  evt.preventDefault();
-  addBookDialog.close();
-  editMode = false;
+yesBtn.addEventListener("click", evt => {
+  removeBookDialog.close();
+  for (let i = 0; i < myLibrary.length; ++i) {
+    if (myLibrary[i][0].id === bookIdToBeRemoved) {
+      myLibrary[i][1].remove();
+      myLibrary.splice(i, 1);
+      break;
+    };
+  };
+});
+
+noBtn.addEventListener("click", evt => {
+  removeBookDialog.close();
 });
 
 addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true, true);

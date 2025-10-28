@@ -131,7 +131,26 @@ div.header {
   };
 }
 
+.remove-book-dialog {
+  background-color: antiquewhite;
+  max-width: 400px;
+  margin: auto;
+  padding: 32px;
+
+  h1 {
+    text-align: center;
+  }
+
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}
+
 .add-book-dialog {
+  background-color: antiquewhite;
   margin: auto;
   padding: 32px;
   
@@ -168,6 +187,7 @@ div.header {
 
     input[type="radio"] {
       appearance: none;
+      background-color: white;
       border: thin solid black;
       border-radius: 50%;
       width: 1.5em;
@@ -181,6 +201,7 @@ div.header {
     input[type="checkbox"] {
       position: relative;
       appearance: none;
+      background-color: white;
       justify-self: center;
       align-self: center;
 
@@ -219,28 +240,6 @@ div.header {
       display: flex;
       justify-content: space-evenly;
       align-items: center;
-
-      button {
-        cursor: pointer;
-        border: thin solid black;
-        border-radius: 5px;
-        padding: 8px 16px;
-        transition: background-color 0.1s;
-      }
-
-      .cancel-btn {
-        background-color: red;
-        &:hover { background-color: #E00; }
-        &:active { background-color: #D00; }
-      }
-
-      .submit-btn {
-        transition: color 0.2s;
-        color: white;
-        background-color: green;
-        &:hover { background-color: #070; }
-        &:active { background-color: #060; }
-      }
     }
   }
 
@@ -255,12 +254,38 @@ div.header {
   }
 }
 
+.submit-btn, .cancel-btn, .no-btn, .yes-btn {
+  cursor: pointer;
+  border: thin solid black;
+  border-radius: 5px;
+  padding: 8px 16px;
+  transition: background-color 0.1s;
+}
+
+.cancel-btn, .no-btn {
+  background-color: red;
+  &:hover { background-color: #E00; }
+  &:active { background-color: #D00; }
+}
+
+.submit-btn, .yes-btn{
+  transition: color 0.2s;
+  color: white;
+  background-color: green;
+  &:hover { background-color: #070; }
+  &:active { background-color: #060; }
+}
+
 @media (max-width: 600px) {
   .add-book-dialog {
-    width: 80vw;
     form {
       min-width: 80vw;
+      max-width: 80vw;
     }
+  }
+
+  .remove-book-dialog {
+    width: 80vw;
   }
 }
 
