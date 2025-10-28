@@ -18,9 +18,38 @@ body {
   min-height: 100vh;
 }
 
+div.header {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #f5deb3, 40%, #e5cea3);
+  padding: 20px;
+  border-bottom: 10px solid white;
+
+  h1 {
+    text-align: center;
+  }
+
+  button {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #0f0;
+    transition: background-color 0.1s;
+
+    &:hover, &:focus {
+      outline: none;
+      background-color: #0e0;
+    }
+    
+    &:active {
+      background-color: #0d0;
+    }
+  }
+}
+
 .books-container {
   flex: auto;
-  padding: 20px;
+  padding: 20px 20px 40px 20px;
   background-image: url("images/bg.png");
   background-color: rgba(0 0 0 / 0.7);
   background-blend-mode: lighten;
@@ -35,7 +64,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  width: 80vw;
+  width: 90vw;
   margin: 0 auto;
 }
 
@@ -196,6 +225,7 @@ body {
         border: thin solid black;
         border-radius: 5px;
         padding: 8px 16px;
+        transition: background-color 0.1s;
       }
 
       .cancel-btn {
@@ -224,3 +254,13 @@ body {
     background-color: black;
   }
 }
+
+@media (max-width: 600px) {
+  .add-book-dialog {
+    width: 80vw;
+    form {
+      min-width: 80vw;
+    }
+  }
+}
+
