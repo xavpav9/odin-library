@@ -11,6 +11,8 @@ const pagesInput = document.querySelector("#pages");
 const yearInput = document.querySelector("#year");
 const readInput = document.querySelector("#read");
 const inputs = [titleInput, authorInput, pagesInput, yearInput, readInput]
+let editMode = false;
+let objIndexToBeEdited;
 
 document.querySelector("#year").setAttribute("max", new Date().getFullYear());
 
@@ -35,10 +37,29 @@ function Book(title, author, pages, year, read) {
   this.texture = Math.floor(Math.random() * 3);
 };
 
-function addBookToLibrary(title, author, pages, year, read) {
-  const book = new Book(title, author, pages, year, read);
-  myLibrary.push([book, createBookForDOM(book)]);
-  booksDisplay.appendChild(myLibrary[myLibrary.length - 1][1]);
+function editBook(book, title, author, pages, year, read) {
+  book.title = title;
+  book.author = author;
+  book.pages = pages;
+  book.year = year;
+  book.read = read;
+};
+
+function addBookToLibrary(title, author, pages, year, read, index=-1) {
+  if (index === -1) {
+    const book = new Book(title, author, pages, year, read);
+    const bookForDOM = createBookForDOM(book);
+    myLibrary.push([book, bookForDOM]);
+    booksDisplay.appendChild(bookForDOM);
+  } else {
+    const book = myLibrary[index][0];
+    editBook(book, ...inputs.slice(0, -1).map(input => input.value), readInput.checked);
+    const bookForDOM = createBookForDOM(book);
+    booksDisplay.removeChild([...booksDisplay.children][index]);
+    nextBook = index === myLibrary.length - 1 ? null : myLibrary[index + 1][1];
+    myLibrary.splice(index, 1, [book, bookForDOM]);
+    booksDisplay.insertBefore(bookForDOM, nextBook);
+  };
 
 };
 
@@ -116,6 +137,31 @@ function createBookForDOM(book) {
     };
   });
 
+  editBtn.addEventListener("click", evt => {
+    let element = evt.target;
+    while (element.dataset.id === undefined) {
+      element = element.parentNode;
+    };
+    for (let i = 0; i < myLibrary.length; ++i) {
+      if (myLibrary[i][1] === element) {
+        objIndexToBeEdited = i;
+        break;
+      };
+    };
+    const obj = myLibrary[objIndexToBeEdited][0];
+
+    editMode = true;
+
+    titleInput.value = obj.title;
+    authorInput.value = obj.author;
+    pagesInput.value = obj.pages;
+    yearInput.value = obj.year;
+    readInput.checked = obj.read;
+    document.querySelector("#AD").checked = true;
+    addBookDialog.querySelector("& > :first-child").textContent = "Edit Book: ";
+    addBookDialog.showModal();
+  });
+
   removeBtn.addEventListener("click", evt => {
     let element = evt.target;
     while (element.dataset.id === undefined) {
@@ -164,6 +210,7 @@ addBookBtn.addEventListener("click", evt => {
   yearInput.value = "";
   readInput.checked = false;
   document.querySelector("#AD").checked = true;
+  addBookDialog.querySelector("& > :first-child").textContent = "Add a new book: ";
   addBookDialog.showModal();
 });
 
@@ -171,7 +218,8 @@ submitBtn.addEventListener("click", evt => {
   evt.preventDefault();
 
   if (document.querySelectorAll(":invalid").length == 0) {
-    addBookToLibrary(...inputs.slice(0, -1).map(input => input.value), readInput.checked);
+    addBookToLibrary(...inputs.slice(0, -1).map(input => input.value), readInput.checked, (editMode) ? objIndexToBeEdited : -1);
+    editMode = false;
     addBookDialog.close();
   } else {
     submitBtn.style.color = "#F44";
@@ -188,6 +236,7 @@ addBookDialog.addEventListener("keydown", evt => {
 cancelBtn.addEventListener("click", evt => {
   evt.preventDefault();
   addBookDialog.close();
+  editMode = false;
 });
 
 addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true);

@@ -89,6 +89,11 @@
 .add-book-dialog {
   margin: auto;
   padding: 32px;
+  
+  & > h1, & > p {
+    text-align: center;
+  }
+
   form {
     margin-top: 50px;
     display: grid;
