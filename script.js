@@ -66,7 +66,7 @@ function addBookToLibrary(title, author, pages, year, timeframe, read, index=-1)
     booksDisplay.appendChild(bookForDOM);
   } else {
     const book = myLibrary[index][0];
-    editBook.call(book, ...inputs.slice(0, -1).map(input => input.value), readInput.checked);
+    editBook.call(book, ...inputs.slice(0, -2).map(input => input.value), timeframeInputs[0].checked, readInput.checked);
     const bookForDOM = createBookForDOM(book);
     booksDisplay.removeChild([...booksDisplay.children][index]);
     nextBook = index === myLibrary.length - 1 ? null : myLibrary[index + 1][1];
