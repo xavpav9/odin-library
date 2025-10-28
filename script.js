@@ -264,7 +264,3 @@ yesBtn.addEventListener("click", evt => {
 noBtn.addEventListener("click", evt => {
   removeBookDialog.close();
 });
-
-addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true, true);
-addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, false, true);
-addBookToLibrary("The Hunger Games", "Suzanne Collins", 123, 2008, true, true);
