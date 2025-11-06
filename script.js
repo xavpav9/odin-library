@@ -23,6 +23,13 @@ document.querySelector("#year").setAttribute("max", new Date().getFullYear());
 
 class Book {
   constructor(title, author, pages, year, timeframe, read) {
+    this.edit(title, author, pages, year, timeframe, read);
+    this.id = crypto.randomUUID();
+    this.texture = Math.floor(Math.random() * 3);
+    this.DOM = createBookForDOM(this);
+  }
+
+  edit(title, author, pages, year, timeframe, read) {
     this.title = title;
     this.author = author;
     if (pages == "") {
@@ -38,43 +45,21 @@ class Book {
       this.timeframe = timeframe ? "AD" : "BC";
     }
     this.read = read;
-    this.id = crypto.randomUUID();
-    this.texture = Math.floor(Math.random() * 3);
+    this.DOM = createBookForDOM(this);
   }
 };
 
-function editBook(title, author, pages, year, timeframe, read) {
-  this.title = title;
-  this.author = author;
-  if (pages == "") {
-    this.pages = "unprovided";
-  } else {
-    this.pages = pages;
-  };
-  if (year == "") {
-    this.year = "unprovided";
-    this.timeframe = "unprovided";
-  } else {
-    this.year = year;
-    this.timeframe = timeframe ? "AD" : "BC";
-  };
-  this.read = read;
-};
 
 function addBookToLibrary(title, author, pages, year, timeframe, read, index=-1) {
   if (index === -1) {
     const book = new Book(title, author, pages, year, timeframe, read);
-    const bookForDOM = createBookForDOM(book);
-    myLibrary.push([book, bookForDOM]);
-    booksDisplay.appendChild(bookForDOM);
+    myLibrary.push(book);
+    booksDisplay.appendChild(book.DOM);
   } else {
-    const book = myLibrary[index][0];
-    editBook.call(book, ...inputs.slice(0, -2).map(input => input.value), timeframeInputs[0].checked, readInput.checked);
-    const bookForDOM = createBookForDOM(book);
-    booksDisplay.removeChild([...booksDisplay.children][index]);
-    nextBook = index === myLibrary.length - 1 ? null : myLibrary[index + 1][1];
-    myLibrary.splice(index, 1, [book, bookForDOM]);
-    booksDisplay.insertBefore(bookForDOM, nextBook);
+    const book = myLibrary[index];
+    const oldDOM = book.DOM;
+    book.edit(...inputs.slice(0, -2).map(input => input.value), timeframeInputs[0].checked, readInput.checked);
+    booksDisplay.replaceChild(book.DOM, oldDOM);
   };
 
 };
@@ -144,9 +129,9 @@ function createBookForDOM(book) {
     const id = element.dataset.id;
 
     for (let book of myLibrary) {
-      if (book[0].id === id) {
-        book[0].read = !book[0].read;
-        book[1] = createBookForDOM(book[0]);
+      if (book.id === id) {
+        book.read = !book.read;
+        book.DOM = createBookForDOM(book);
         refreshBooks();
         break;
       };
@@ -159,12 +144,12 @@ function createBookForDOM(book) {
       element = element.parentNode;
     };
     for (let i = 0; i < myLibrary.length; ++i) {
-      if (myLibrary[i][1] === element) {
+      if (myLibrary[i].DOM === element) {
         objIndexToBeEdited = i;
         break;
       };
     };
-    const obj = myLibrary[objIndexToBeEdited][0];
+    const obj = myLibrary[objIndexToBeEdited];
 
     editMode = true;
 
@@ -209,7 +194,7 @@ function createBookForDOM(book) {
 
 function refreshBooks() {
   [...booksDisplay.children].forEach(child => child.remove());
-  myLibrary.forEach(book => booksDisplay.appendChild(book[1]));
+  myLibrary.forEach(book => booksDisplay.appendChild(book.DOM));
 };
 
 addBookBtn.addEventListener("click", evt => {
@@ -252,8 +237,8 @@ addBookDialog.addEventListener("keydown", evt => {
 yesBtn.addEventListener("click", evt => {
   removeBookDialog.close();
   for (let i = 0; i < myLibrary.length; ++i) {
-    if (myLibrary[i][0].id === bookIdToBeRemoved) {
-      myLibrary[i][1].remove();
+    if (myLibrary[i].id === bookIdToBeRemoved) {
+      myLibrary[i].DOM.remove();
       myLibrary.splice(i, 1);
       break;
     };
@@ -263,3 +248,6 @@ yesBtn.addEventListener("click", evt => {
 noBtn.addEventListener("click", evt => {
   removeBookDialog.close();
 });
+
+
+addBookToLibrary("The h games", "Suz", 374, 2008, AD, true);
