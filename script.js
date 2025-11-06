@@ -21,27 +21,26 @@ let bookIdToBeRemoved;
 
 document.querySelector("#year").setAttribute("max", new Date().getFullYear());
 
-function Book(title, author, pages, year, timeframe, read) {
-  if (!new.target) {
-    throw Error("Use new keyword with this constructor.");
-  };
-  this.title = title;
-  this.author = author;
-  if (pages == "") {
-    this.pages = "unprovided";
-  } else {
-    this.pages = pages;
-  };
-  if (year == "") {
-    this.year = "unprovided";
-    this.timeframe = "unprovided";
-  } else {
-    this.year = year;
-    this.timeframe = timeframe ? "AD" : "BC";
-  };
-  this.read = read;
-  this.id = crypto.randomUUID();
-  this.texture = Math.floor(Math.random() * 3);
+class Book {
+  constructor(title, author, pages, year, timeframe, read) {
+    this.title = title;
+    this.author = author;
+    if (pages == "") {
+      this.pages = "unprovided";
+    } else {
+      this.pages = pages;
+    }
+    if (year == "") {
+      this.year = "unprovided";
+      this.timeframe = "unprovided";
+    } else {
+      this.year = year;
+      this.timeframe = timeframe ? "AD" : "BC";
+    }
+    this.read = read;
+    this.id = crypto.randomUUID();
+    this.texture = Math.floor(Math.random() * 3);
+  }
 };
 
 function editBook(title, author, pages, year, timeframe, read) {
