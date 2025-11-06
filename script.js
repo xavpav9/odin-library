@@ -248,6 +248,3 @@ yesBtn.addEventListener("click", evt => {
 noBtn.addEventListener("click", evt => {
   removeBookDialog.close();
 });
-
-
-addBookToLibrary("The h games", "Suz", 374, 2008, AD, true);
