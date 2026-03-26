@@ -272,14 +272,47 @@ function checkFormValidity() {
     authorInput.setCustomValidity("")
   };
 
+  if (pagesInput.validity.rangeUnderflow) {
+    pagesInput.setCustomValidity("The number of pages must be greater than 0.")
+    valid = false;
+  } else if (!pagesInput.validity.valid) {
+    pagesInput.setCustomValidity("Please enter a proper number of pages.")
+    valid = false;
+  } else {
+    pagesInput.setCustomValidity("")
+  }
+
+  if (yearInput.validity.rangeUnderflow) {
+    yearInput.setCustomValidity("The year must be greater than 0.")
+    valid = false;
+  } else if (yearInput.validity.rangeOverflow) {
+    yearInput.setCustomValidity("The year must be less than or equal to "+String(yearInput.getAttribute("max"))+".")
+    valid = false;
+  } else if (!yearInput.validity.valid) {
+    yearInput.setCustomValidity("Please enter a proper year.")
+    valid = false;
+  } else {
+    yearInput.setCustomValidity("")
+  }
+
   return valid;
 }
 
 
 titleInput.addEventListener("input", evt => {
   evt.target.setAttribute("placeholder", "e.g. The Hunger Games");
+  titleInput.setCustomValidity("")
 });
 
 authorInput.addEventListener("input", evt => {
   evt.target.setAttribute("placeholder", "e.g. Suzanne Collins");
+  authorInput.setCustomValidity("")
+});
+
+pagesInput.addEventListener("input", evt => {
+  pagesInput.setCustomValidity("")
+});
+
+yearInput.addEventListener("input", evt => {
+  yearInput.setCustomValidity("")
 });
