@@ -212,7 +212,10 @@ addBookBtn.addEventListener("click", evt => {
 submitBtn.addEventListener("click", evt => {
   evt.preventDefault();
 
-  if (document.querySelectorAll(":invalid").length == 0) {
+
+  let valid = checkFormValidity();
+
+  if (valid) {
     addBookToLibrary(...inputs.slice(0, -2).map(input => input.value), timeframeInputs[0].checked, readInput.checked, (editMode) ? objIndexToBeEdited : -1);
     editMode = false;
     addBookDialog.close();
@@ -247,4 +250,36 @@ yesBtn.addEventListener("click", evt => {
 
 noBtn.addEventListener("click", evt => {
   removeBookDialog.close();
+});
+
+
+function checkFormValidity() {
+  let valid = true;
+
+  if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity("Please enter a title for the book.")
+    titleInput.setAttribute("placeholder", "Please enter a title for the book.");
+    valid = false;
+  } else {
+    titleInput.setCustomValidity("")
+  };
+
+  if (authorInput.validity.valueMissing) {
+    authorInput.setCustomValidity("Please an author name for the book.")
+    authorInput.setAttribute("placeholder", "Please an author name for the book.");
+    valid = false;
+  } else {
+    authorInput.setCustomValidity("")
+  };
+
+  return valid;
+}
+
+
+titleInput.addEventListener("input", evt => {
+  evt.target.setAttribute("placeholder", "e.g. The Hunger Games");
+});
+
+authorInput.addEventListener("input", evt => {
+  evt.target.setAttribute("placeholder", "e.g. Suzanne Collins");
 });
